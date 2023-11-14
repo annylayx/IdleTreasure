@@ -3,7 +3,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -38,6 +38,7 @@
 			}
 		},
 		{
+
 			"path" : "pages/shopping-cart/shopping-cart",
 			"style" : 
 			{
@@ -58,7 +59,14 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false,
+				"enablePullDownRefresh" : false
+
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+			
 				"navigationStyle": "custom"
 			}
 		},
@@ -67,14 +75,36 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false,
+				"enablePullDownRefresh" : false
+				
+			}
+			
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationStyle": "custom"
+				
+			}
+		},
+		{
+			"path": "pages/message/message",
+			"style": {
+				"navigationStyle": "custom"
+				
+			}
+		},
+		{
+			"path": "pages/order/orderdetail",
+			"style": {
+
 				"navigationStyle": "custom"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		// "navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
 		"app-plus": {
