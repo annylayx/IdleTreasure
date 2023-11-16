@@ -69,7 +69,7 @@
 		methods: {
 			setting(){
 				uni.navigateTo({
-					url:'',//跳转到设置
+					url:'/pages/set/set-list',//跳转到设置
 				})
 			},
 			search(){
@@ -84,7 +84,7 @@
 <style>
 	/* @import '../../css/style.css'; */
 	.aui-news-box {
-	    margin-top: 10px;
+	    //margin-top: 10px;
 	    background: #fff;
 	}
 	.aui-news-item {
