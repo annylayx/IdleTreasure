@@ -179,13 +179,13 @@
 						],
 						
 				buttonGroup: [{
-								text: '取消订单',
+								text: '申请售后',
 								backgroundColor: 'linear-gradient(90deg, #b8b8b8, #b8b8b8)',
 								color: '#fff'
 							},
 							
 							{
-								text: '前往付款',
+								text: '前往评价',
 								backgroundColor: 'linear-gradient(90deg, #409eff, #409eff)',
 								color: '#fff'
 							}

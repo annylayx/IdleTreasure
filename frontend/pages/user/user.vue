@@ -123,7 +123,7 @@
 		methods: {
 			userInformation(){
 				uni.navigateTo({
-					url:'',//实现跳转用户信息
+					url:'../../pages/set/info-set',//实现跳转用户信息
 				})
 			},
 			setting(){

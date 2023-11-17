@@ -9,8 +9,8 @@
 		
 		<view class="form">
 			<uni-forms  ref="form" :modelValue="formData" :rules="rules">
-				<uni-forms-item name="iphone">
-					<input class="input" type="text" v-model="formData.iphone" placeholder="请输入用户名/手机号" />
+				<uni-forms-item name="message">
+					<input class="input" type="text" v-model="formData.message" placeholder="请输入用户名/手机号" />
 					
 				</uni-forms-item>
 				
@@ -19,8 +19,8 @@
 				</uni-forms-item>
 			</uni-forms>
 		
-			<view class="loginBtn" @click="submit">
-				<text class="btnValue" style="color: black;">登录</text>
+			<view class="loginBtn" @click="login">
+				<text  style="color: black;">登录</text>
 			</view>
 		</view>
 		
@@ -40,33 +40,64 @@
 		data() {
 			return {
 							
-					formData: {
-						name:'',
-						iphone: '',
+					formData:{
+						message:'',
 						password:'',
-						
-						
-				},
-				rules: {   
-					
-				}
+					},
+
+				rules: {     //实现提示输入不能为空
+					 message: {
+							  rules: [{
+								required: true,
+								errorMessage: '请输入用户名/手机号' // 修改提示信息
+							  }]
+							},
+							password: {
+							  rules: [{
+								required: true,
+								errorMessage: '请输入密码' // 修改提示信息
+							  }]
+							}
+					}
 			}
 		},
 		onLoad() {
 
 		},
 		methods: {
-			
 			submit() {
-			          //实现提交数据
+			           this.$refs.form.validate().then(res=>{
+			               console.log('表单数据信息：', res);
+										this.login(res)
+			           }).catch(err =>{
+			               console.log('表单错误信息：', err);
+			           })
 			       },
+			 login() {
+					uni.request({
+					  url: 'http://47.110.148.166:8084/swagger-ui/index.html#/WxUserController/login',
+					  // method: 'POST',
+					  // data: {
+					  //   message: formData.message,
+					  //   password: formData.password,
+					  // },
+					  success: res => {
+						console.log('成功')   //请求成功的逻辑
+					  },
+					  fail: err => {
+							console.log('失败')
+						// 请求失败的处理逻辑
+					  },
+					})
+					
+
+					
+			         
+			    }    
 						
 			
 			
-			login(e) {
-	
-				
-			},
+			
 
 
 

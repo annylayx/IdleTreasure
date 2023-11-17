@@ -46,7 +46,7 @@
 			
 			submit() {
 					uni.navigateTo({
-					    url: '../login/login',
+					    url: '',
 					});
 			          //实现跳转登录
 			       },
@@ -54,7 +54,7 @@
 			
 			login() {
 				uni.navigateTo({
-				    url: '  ',
+				    url: '../login/login',
 				});
 				//实现跳转注册
 			}
