@@ -1,7 +1,5 @@
 package edu.fzu.se.backend.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import edu.Utils.ResultUtils;
-import edu.Utils.ResultVo;
 import edu.fzu.se.backend.bean.WxUser;
 import edu.fzu.se.backend.service.WxUserService;
 import edu.fzu.se.backend.service.serviceimpl.WxUserServiceimpl;
@@ -11,10 +9,9 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 @Tag(name = "WxUserController", description = "微信用户控制器")
@@ -49,19 +46,21 @@ public class WxUserController {
     }
     @Operation(summary = "登录")
     @Parameters({
-            @Parameter(name = "user", description = "用户", required = true)
+            @Parameter(name = "userinfo", description = "用户信息", required = true)
     })
     @PostMapping("/login")
-    public String login(@RequestBody WxUser user){
-        //构造查询条件
-        QueryWrapper<WxUser> query = new QueryWrapper<>();
-        query.lambda().eq(WxUser::getUser_Name,user.getUser_Name()).eq(WxUser::getUser_Key,
-                DigestUtils.md5DigestAsHex(user.getUser_Key().getBytes()));
-        WxUser wxUser = wxUserService.getOne(query);
-        if(wxUser != null){
-            return "登录成功";
+    public String login(@RequestBody Map<String, String> userinfo){
+        Long x = wxUserService.loginService(userinfo.get("username"),userinfo.get("password"));
+        if(x != null){
+            return x.toString();
         }
-        return "用户密码或密码错误!";
+        else throw new RuntimeException("用户名或密码错误");
     }
 
+    @GetMapping("/get")
+    public WxUser getUser(@RequestParam("id") Long id){
+        WxUser u = wxUserService.getById(id);
+        u.setUser_Key("");
+        return u;
+    }
 }

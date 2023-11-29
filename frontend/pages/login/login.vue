@@ -6,29 +6,29 @@
 				<image class="img" src="../../static/cat.png" mode="aspectFit"></image>
 			</view>
 		</view>
-		
+
 		<view class="form">
-			<uni-forms  ref="form" :modelValue="formData" :rules="rules">
-				<uni-forms-item name="message">
-					<input class="input" type="text" v-model="formData.message" placeholder="请输入用户名/手机号" />
-					
+			<uni-forms ref="form" :modelValue="formData" :rules="rules">
+				<uni-forms-item name="iphone">
+					<input class="input" type="text" v-model="formData.iphone" placeholder="请输入用户名/手机号" />
+
 				</uni-forms-item>
-				
-				<uni-forms-item name="password"  >
-					<input  class="input" type="password"  v-model="formData.password" placeholder="请输入密码" />
+
+				<uni-forms-item name="password">
+					<input class="input" type="password" v-model="formData.password" placeholder="请输入密码" />
 				</uni-forms-item>
 			</uni-forms>
-		
-			<view class="loginBtn" @click="login">
-				<text  style="color: black;">登录</text>
+
+			<view class="loginBtn" @click="submit">
+				<text class="btnValue" style="color: black;">登录</text>
 			</view>
 		</view>
-		
+
 		<view class="inputArea">
 			<!-- 跳转注册界面 -->
 			<navigator url="../register/register" hover-class="none" class="label">新用户注册</navigator>
 		</view>
-		
+
 	</view>
 	</view>
 </template>
@@ -36,74 +36,68 @@
 
 
 <script>
+	import {
+		mapMutations
+	} from "vuex";
 	export default {
+
 		data() {
 			return {
-							
-					formData:{
-						message:'',
-						password:'',
-					},
-
-				rules: {     //实现提示输入不能为空
-					 message: {
-							  rules: [{
-								required: true,
-								errorMessage: '请输入用户名/手机号' // 修改提示信息
-							  }]
-							},
-							password: {
-							  rules: [{
-								required: true,
-								errorMessage: '请输入密码' // 修改提示信息
-							  }]
-							}
-					}
-			}
+				formData: {
+					name: "",
+					iphone: "",
+					password: "",
+				},
+				rules: {},
+			};
 		},
-		onLoad() {
-
-		},
+		onLoad() {},
 		methods: {
+			...mapMutations(["login"]),
 			submit() {
-			           this.$refs.form.validate().then(res=>{
-			               console.log('表单数据信息：', res);
-										this.login(res)
-			           }).catch(err =>{
-			               console.log('表单错误信息：', err);
-			           })
-			       },
-			 login() {
-					uni.request({
-					  url: 'http://47.110.148.166:8084/swagger-ui/index.html#/WxUserController/login',
-					  // method: 'POST',
-					  // data: {
-					  //   message: formData.message,
-					  //   password: formData.password,
-					  // },
-					  success: res => {
-						console.log('成功')   //请求成功的逻辑
-					  },
-					  fail: err => {
-							console.log('失败')
-						// 请求失败的处理逻辑
-					  },
-					})
-					
-
-					
-			         
-			    }    
-						
-			
-			
-			
-
-
-
-
-		}
-	}
+				uni.request({
+					url: this.$store.state.baseUrl + "/api/wxUser/login",
+					method: "POST",
+					data: {
+						username: this.formData.iphone,
+						password: this.formData.password,
+					},
+					headers: {
+						'Content-Type': 'application/json'
+		 			},
+					success: (res) => {
+						console.log(res.data);
+						if (res.data.code == 200) {
+							let provider = {
+								token: res.data.data,
+								user_name: this.formData.iphone
+							};
+							this.login(provider);
+							uni.reLaunch({
+								url: '/pages/home/home'
+							});
+						} else {
+							uni.showToast({
+								title: res.data.msg,
+								duration: 1000
+							});
+							this.formData.iphone = "";
+							this.formData.password = "";
+						}
+					},
+					fail: (res) => {
+						console.log(res.data);
+						uni.showToast({
+							title: '连接错误',
+							duration: 1000
+						});
+						this.formData.iphone = "";
+						this.formData.password = "";
+					}
+				});
+			},
+		},
+	};
 </script>
 
 
@@ -131,7 +125,7 @@
 	}
 
 	.avator .img {
-		width: 100%
+		width: 100%;
 	}
 
 	.form {
@@ -147,20 +141,18 @@
 		height: 70upx;
 		color: #666;
 		border: 1px #e5e5e5 solid;
-		border-radius:50px;
+		border-radius: 50px;
 		padding: 10px;
 		background-color: #ffffff;
 		/* height: 300upx; */
-		
 	}
-	.psd{
+
+	.psd {
 		margin-top: 8px;
-		
-	
 	}
-	
+
 	.loginBtn {
-		flex:1;
+		flex: 1;
 		width: 108%;
 		height: 100upx;
 		background: #5bc3e3;
@@ -169,25 +161,26 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-
 	}
-	.icon{
+
+	.icon {
 		/* margin-top: 200px; */
 		margin-left: 240px;
 		margin-top: -20px;
 		/* margin-top: 10px; */
 		/* background: rgba(8, 8, 10, 0.96); */
-
 	}
+
 	.inputArea {
 		padding: 20upx 10%;
-		
 	}
-	.img{
+
+	.img {
 		height: 120px;
 		width: 120px;
 	}
-	.label{
+
+	.label {
 		padding: 10upx 0;
 		text-align: right;
 		font-size: 30upx;
